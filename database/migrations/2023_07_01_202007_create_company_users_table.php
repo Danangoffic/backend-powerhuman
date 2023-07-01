@@ -13,12 +13,9 @@ return new class extends Migration
     {
         Schema::create('company_users', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('company_id');
-            // $table->foreignId('user_id')->constrained('users', ' id', 'company_users_user_id')->cascadeOnDelete()->cascadeOnUpdate();
-            // $table->foreignId('company_id')->constrained('companies', 'id', 'company_users_company_id')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->bigInteger('user_id')->unsigned();
+            $table->bigInteger('company_id')->unsigned();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
