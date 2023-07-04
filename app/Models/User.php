@@ -60,13 +60,13 @@ class User extends Authenticatable
     ];
 
     /**
-     * The company_users that belong to the User
+     * The companies that belong to the User
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function company_users()
+    public function companies()
     {
-        return $this->belongsToMany(Company::class);
+        return $this->belongsToMany(Company::class, 'company_users', 'user_id', 'company_id');
     }
 
     /**
