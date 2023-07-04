@@ -31,7 +31,7 @@ class Employee extends Model
      */
     public function team()
     {
-        return $this->belongsTo(Team::class, 'team_id');
+        return $this->belongsTo(Team::class);
     }
 
     /**
@@ -41,6 +41,6 @@ class Employee extends Model
      */
     public function role()
     {
-        return $this->hasOne(Role::class, 'role_id');
+        return $this->hasOne(Role::class);
     }
 }
