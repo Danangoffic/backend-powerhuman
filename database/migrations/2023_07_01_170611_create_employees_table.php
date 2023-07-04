@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('gender')->nullable();
             $table->integer('age')->nullable();
-            $table->string('phone', 12)->nullable();
+            $table->string('phone', 20)->nullable();
             $table->string('photo')->nullable();
 
             $table->boolean('is_verified')->default(false);
