@@ -4,8 +4,11 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\Company;
-use App\Models\Team;
+// use App\Models\Company;
+// use App\Models\Employee;
+// use App\Models\Responsibility;
+// use App\Models\Role;
+// use App\Models\Team;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -23,6 +26,10 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         // Company::factory(10)->create();
-        Team::factory(40)->create();
+        // Team::factory(40)->create();
+        // Role::factory(20)->create();
+        // Responsibility::factory(100)->create();
+        // Employee::factory(50)->create();
+        // \App\Models\CompanyUser::factory(10)->create();
     }
 }
