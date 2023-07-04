@@ -68,4 +68,14 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Company::class);
     }
+
+    /**
+     * Get the team that owns the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function team()
+    {
+        return $this->belongsTo(Team::class, 'current_team_id');
+    }
 }
