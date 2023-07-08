@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\API\CompanyController;
+use App\Http\Controllers\API\RoleController;
+use App\Http\Controllers\API\TeamController;
 use App\Http\Controllers\API\UserAuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +29,20 @@ Route::prefix('company')->middleware('auth:sanctum')->name('company.')->group(fu
     Route::put('/{id}', [CompanyController::class, 'update'])->name('update');
     // delete a company by company id
     Route::delete('/{id}', [CompanyController::class, 'destroy'])->name('destroy');
+});
+
+Route::prefix('team')->middleware('auth:sanctum')->name('team.')->group(function () {
+    Route::post('/', [TeamController::class, 'create'])->name('create');
+    Route::get('/', [TeamController::class, 'fetch'])->name('fetch');
+    Route::post('/{id}', [TeamController::class, 'update'])->name('update');
+    Route::post('/{id}/delete', [TeamController::class, 'delete'])->name('destroy');
+});
+
+Route::prefix('role')->middleware('auth:sanctum')->name('role.')->group(function () {
+    Route::get('/', [RoleController::class, 'fetch'])->name('fetch');
+    Route::post('/', [RoleController::class, 'create'])->name('create');
+    Route::post('/{id}', [RoleController::class, 'update'])->name('update');
+    Route::post('/{id}/delete', [RoleController::class, 'delete'])->name('destroy');
 });
 
 // Route::prefix('company')->middleware('auth:sanctum')->group(function () {
