@@ -33,10 +33,13 @@ class RoleController extends Controller
     public function fetch(Request $request)
     {
         try {
-            $roles = \App\Models\Role::with('company')->whereHas('company.users', function ($query) {
+            $roles = \App\Models\Role::whereHas('company.users', function ($query) {
                 $query->where('user_id', Auth::user()->id);
             });
             $limit = $request->input('limit', 10);
+            if ($request->has('with_responsibilities')) {
+                $roles->with('responsibilities');
+            }
             // if request has id, then get roles by id
             if ($request->has('id')) {
                 $roles = $roles->find($request->id);
@@ -45,12 +48,11 @@ class RoleController extends Controller
                 }
                 return ResponseFormatter::error(null, 'Not found', 404);
             }
-
             // if request has name, then get roles by name
             if ($request->has('name')) {
                 $roles->where('name', 'like', '%' . $request->name . '%');
             }
-            return ResponseFormatter::success($roles->paginate($limit), 'Success');
+            return ResponseFormatter::success($roles->cursorPaginate($limit), 'Success');
         } catch (\Throwable $th) {
             Log::debug("Error: $th");
             return ResponseFormatter::error($th, 'Data gagal diambil', 500);

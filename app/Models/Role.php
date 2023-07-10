@@ -40,6 +40,6 @@ class Role extends Model
      */
     public function employee()
     {
-        return $this->belongsTo(Employee::class, 'role_id');
+        return $this->belongsTo(Employee::class);
     }
 }

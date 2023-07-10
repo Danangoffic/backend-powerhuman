@@ -41,6 +41,6 @@ class Employee extends Model
      */
     public function role()
     {
-        return $this->hasOne(Role::class);
+        return $this->hasOne(Role::class, 'id', 'role_id');
     }
 }
