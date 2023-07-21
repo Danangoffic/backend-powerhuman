@@ -15,7 +15,7 @@ class EmployeeController extends Controller
     public function fetch(Request $request)
     {
         try {
-            $employees = \App\Models\Employee::query()->latest()->with(['role', 'team']);
+            $employees = \App\Models\Employee::query();
             // find employee by id
             if ($request->has('id')) {
                 $employees = $employees->find($request->id);
@@ -29,41 +29,34 @@ class EmployeeController extends Controller
             if ($request->has('name')) {
                 $employees = $employees->where('name', 'like', "%$request->name%");
             }
-            // find employee by company id
-            if ($request->has('company_id')) {
-                $employees = $employees->whereHas('role.company', function ($query) use ($request) {
-                    $query->where('id', $request->company_id);
-                });
-                // return response
-                if ($employees) {
-                    return ResponseFormatter::success($employees->cursorPaginate($limit), 'Success');
-                } else {
-                    return ResponseFormatter::error(null, 'Not found', 404);
-                }
+            if ($request->has('age')) {
+                $employees = $employees->where('age', $request->age);
+            }
+            if ($request->has('email')) {
+                $employees = $employees->where('email', 'like', "%$request->email%");
+            }
+            if ($request->has('phone')) {
+                $employees = $employees->where('phone', 'like', "%$request->phone%");
             }
             // find employee by team id
             if ($request->has('team_id')) {
                 $employees = $employees->whereHas('team', function ($query) use ($request) {
                     $query->where('id', $request->team_id);
                 });
-                // return response
-                if ($employees) {
-                    return ResponseFormatter::success($employees->cursorPaginate($limit), 'Success');
-                } else {
-                    return ResponseFormatter::error(null, 'Not found', 404);
-                }
             }
             // find employee by role id
             if ($request->has('role_id')) {
                 $employees = $employees->whereHas('role', function ($query) use ($request) {
                     $query->where('id', $request->role_id);
                 });
-                // return response
-                if ($employees) {
-                    return ResponseFormatter::success($employees->cursorPaginate($limit), 'Success');
-                } else {
-                    return ResponseFormatter::error(null, 'Not found', 404);
-                }
+            }
+
+            // find employee by company id
+            if ($request->has('company_id')) {
+                $company_id = $request->company_id;
+                $employees = $employees->whereHas('team.company', function ($query) use ($company_id) {
+                    $query->where('id', $company_id);
+                });
             }
             // return response
             if ($employees) {
@@ -71,6 +64,24 @@ class EmployeeController extends Controller
             } else {
                 return ResponseFormatter::error(null, 'Not found', 404);
             }
+        } catch (\Throwable $th) {
+            Log::alert($th);
+            return ResponseFormatter::error($th, 'Data gagal diambil', 500);
+        }
+    }
+
+    public function fetch_total_by_company(Request $request)
+    {
+        try {
+            $employees = \App\Models\Employee::query();
+            if ($request->has('company_id')) {
+                $company_id = $request->company_id;
+                $employees = $employees->whereHas('team.company', function ($query) use ($company_id) {
+                    $query->where('id', $company_id);
+                });
+            }
+            $total = $employees->count();
+            return ResponseFormatter::success($total, 'Success');
         } catch (\Throwable $th) {
             Log::alert($th);
             return ResponseFormatter::error($th, 'Data gagal diambil', 500);
