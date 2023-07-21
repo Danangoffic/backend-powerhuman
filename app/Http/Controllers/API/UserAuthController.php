@@ -12,7 +12,7 @@ use Illuminate\Validation\Rules\Password;
 
 class UserAuthController extends Controller
 {
-    private static $AUTH_FAILED = 'Authentication Failed';
+    private $AUTH_FAILED = 'Authentication Failed';
 
     /**
      * Login User
@@ -24,7 +24,7 @@ class UserAuthController extends Controller
         try {
             // validate request user
             $request->validate([
-                'email' => 'required|email|exists:users,email',
+                'email' => 'required|email',
                 'password' => 'required'
             ]);
             // find user by email
